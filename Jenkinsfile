@@ -19,8 +19,8 @@ pipeline {
 
     environment {
         NODE_ENV       = 'test'
-        DATABASE_URL   = 'postgres://outlineuser:pass@localhost:5433/outlinetest'
-        REDIS_URL      = 'redis://localhost:6379'
+        DATABASE_URL   = 'postgres://outlineuser:pass@host.docker.internal:5433/outlinetest'
+        REDIS_URL      = 'redis://host.docker.internal:6379'
         SONAR_TOKEN    = credentials('sonarcloud-token')
         DOCKER_IMAGE   = 'outline-hu01'
         DOCKER_TAG     = "${env.BUILD_NUMBER}"
