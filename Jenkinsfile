@@ -41,6 +41,7 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
+                sh 'apt-get update -qq && apt-get install -y libatomic1'
                 sh 'npm install -g yarn'
                 sh 'yarn install --frozen-lockfile'
             }
