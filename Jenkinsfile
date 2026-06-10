@@ -88,19 +88,16 @@ pipeline {
 
         stage('SonarQube Analysis') {
             steps {
-                withSonarQubeEnv('SonarCloud') {
-                    sh '''
-                        npx sonarqube-scanner \
-                          -Dsonar.token=${SONAR_TOKEN}
-                    '''
-                }
+                // Token y servidor ya están en sonar-project.properties; no requiere plugin Jenkins
+                sh 'npx sonarqube-scanner'
             }
         }
 
         stage('Quality Gate') {
             steps {
                 timeout(time: 5, unit: 'MINUTES') {
-                    waitForQualityGate abortPipeline: true
+                    // Verifica Quality Gate via API REST de SonarCloud (sin waitForQualityGate)
+                    sh 'node scripts/check-quality-gate.js'
                 }
             }
         }
