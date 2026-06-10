@@ -51,17 +51,17 @@ pipeline {
 
         stage('DB Migrate') {
             steps {
-                sh 'yarn db:migrate'
+                sh 'yarn db:reset'
             }
         }
 
         stage('Unit Tests') {
             steps {
-                sh 'TZ=UTC npx vitest run --project server "revisions"'
+                sh 'mkdir -p test-results && TZ=UTC npx vitest run --project server "revisions" --reporter=verbose --reporter=junit --outputFile.junit=test-results/junit.xml'
             }
             post {
                 always {
-                    junit '**/test-results/*.xml'
+                    junit allowEmptyResults: true, testResults: 'test-results/junit.xml'
                 }
             }
         }
