@@ -18,7 +18,7 @@
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "prepare": "husky install",
-    "postinstall": "yarn patch-package",
+    "postinstall": "yarn patch-package && node scripts/patch-sequelize-encrypted.js",
     "install-local-ssl": "node ./server/scripts/install-local-ssl.js",
     "release": "node ./server/scripts/release.js",
     "heroku-postbuild": "yarn build && yarn db:migrate",

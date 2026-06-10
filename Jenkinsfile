@@ -27,9 +27,9 @@ pipeline {
         DOCKER_TAG     = "${env.BUILD_NUMBER}"
     }
 
-    tools {
-        nodejs 'NodeJS-20'
-    }
+    // Sin 'tools { nodejs }': el tool 'NodeJS-20' tiene Node.js 26 instalado
+    // (configuración incorrecta en Jenkins). Instalamos Node.js 20 desde
+    // NodeSource en la etapa de dependencias para garantizar la versión correcta.
 
     stages {
 
@@ -42,7 +42,14 @@ pipeline {
 
         stage('Install dependencies') {
             steps {
-                sh 'apt-get update -qq && apt-get install -y libatomic1'
+                // Instalar Node.js 20 LTS desde NodeSource (soportado por package.json engines)
+                sh '''
+                    apt-get update -qq
+                    apt-get install -y libatomic1 curl ca-certificates
+                    curl -fsSL https://deb.nodesource.com/setup_20.x | bash -
+                    apt-get install -y nodejs
+                    echo "Node.js: $(node --version)  npm: $(npm --version)"
+                '''
                 sh 'npm install -g corepack --force'
                 sh 'corepack enable'
                 sh 'corepack prepare yarn@4.11.0 --activate'
