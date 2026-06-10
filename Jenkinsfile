@@ -80,14 +80,8 @@ pipeline {
             }
             post {
                 always {
-                    publishHTML([
-                        allowMissing: false,
-                        alwaysLinkToLastBuild: true,
-                        keepAll: true,
-                        reportDir: 'coverage',
-                        reportFiles: 'index.html',
-                        reportName: 'Coverage Report HU-01'
-                    ])
+                    // Archiva el reporte HTML de cobertura como artefacto del build
+                    archiveArtifacts artifacts: 'coverage/**', allowEmptyArchive: true
                 }
             }
         }
