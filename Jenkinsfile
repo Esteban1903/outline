@@ -42,7 +42,9 @@ pipeline {
         stage('Install dependencies') {
             steps {
                 sh 'apt-get update -qq && apt-get install -y libatomic1'
-                sh 'npm install -g yarn@4.11.0'
+                sh 'npm install -g corepack'
+                sh 'corepack enable'
+                sh 'corepack prepare yarn@4.11.0 --activate'
                 sh 'yarn install --frozen-lockfile'
             }
         }
